@@ -1,4 +1,4 @@
-package org.esourcer.core.foo;
+package org.esourcer.core;
 
 import lombok.Value;
 import org.esourcer.core.entity.ReplyType;

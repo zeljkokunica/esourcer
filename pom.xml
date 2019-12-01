@@ -11,6 +11,7 @@
 
     <modules>
         <module>core</module>
+        <module>jpa</module>
     </modules>
 
     <properties>
@@ -126,7 +127,12 @@
                 <version>2.9.9</version>
                 <scope>compile</scope>
             </dependency>
-
+            <!-- jpa -->
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>2.2</version>
+            </dependency>
             <!-- testing -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>

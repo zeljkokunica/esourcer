@@ -7,5 +7,5 @@ public interface EventStore<Event, EntityId> {
 
     Stream<Event> readEventsFrom(final EntityId entityId, final Long fromIndex);
 
-    Long writeEvents(final EntityId entityId, final List<Event> events);
+    Long writeEvents(final EntityId entityId, final Long startIndex, final List<Event> events);
 }

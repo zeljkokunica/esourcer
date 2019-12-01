@@ -1,8 +1,11 @@
 package org.esourcer.core.snapshot;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+@RequiredArgsConstructor
 public class InMemorySnapshotStore<Entity, EntityId> implements SnapshotStore<Entity, EntityId> {
     private final String entityEventGroup;
     private final ConcurrentHashMap<String, Snapshot> snapshots = new ConcurrentHashMap<>();
@@ -23,10 +26,6 @@ public class InMemorySnapshotStore<Entity, EntityId> implements SnapshotStore<En
         public Entity getEntity() {
             return entity;
         }
-    }
-
-    public InMemorySnapshotStore(final String entityEventGroup) {
-        this.entityEventGroup = entityEventGroup;
     }
 
     @Override

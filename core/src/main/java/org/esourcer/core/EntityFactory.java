@@ -1,5 +1,6 @@
 package org.esourcer.core;
 
+import lombok.Getter;
 import org.esourcer.core.entity.EntityManager;
 import org.esourcer.core.entity.EntityMangerOptions;
 import org.esourcer.core.entity.EntityTransactionManager;
@@ -59,4 +60,6 @@ public class EntityFactory<Command extends ReplyType, Event, Entity, EntityId> {
                 Optional.ofNullable(entityTransactionManager).orElse(new VoidEntityTransactionManager()),
                 entity::buildBehaviour);
     }
+
+
 }
