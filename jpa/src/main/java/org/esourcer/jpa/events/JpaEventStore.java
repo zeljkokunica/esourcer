@@ -28,11 +28,13 @@ public class JpaEventStore<Event, EntityId> implements EventStore<Event, EntityI
 
     @Override
     public Stream<Event> readEventsFrom(final EntityId entityId, final Long fromIndex) {
-        return entityManager.createNamedQuery("JpaEvent.findEventsByGroupAndEntityId", JpaEvent.class)
+        final List<JpaEvent> events = entityManager.createNamedQuery("JpaEvent.findEventsByGroupAndEntityId", JpaEvent.class)
                 .setParameter("eventGroup", eventGroup)
                 .setParameter("entityId", entityId.toString())
                 .setFirstResult(fromIndex.intValue())
-                .getResultStream()
+                .getResultList();
+        return events
+                .stream()
                 .map(this::mapFromJpa);
     }
 
@@ -52,8 +54,8 @@ public class JpaEventStore<Event, EntityId> implements EventStore<Event, EntityI
         return new JpaEvent(
                 null,
                 eventGroup,
-                ordinal,
                 entityId.toString(),
+                ordinal,
                 event.getClass().getName(),
                 new String(serializer.serialize(event), Charset.forName("UTF-8")),
                 Instant.now());

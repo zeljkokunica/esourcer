@@ -24,7 +24,7 @@ public final class ResultAndEvents<Result, Event> {
         return new ResultAndEvents<>(Optional.empty(), Collections.singletonList(event));
     }
 
-    public static <Result, Event> ResultAndEvents<Result, Event> ofEvents(final List<Event> events) {
-        return new ResultAndEvents<>(Optional.empty(), events);
+    public static <Result, Event> ResultAndEvents<Result, Event> ofEvents(final Event...events) {
+        return new ResultAndEvents<>(Optional.empty(), Arrays.asList(events));
     }
 }

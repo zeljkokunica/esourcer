@@ -39,7 +39,7 @@ public class EntityManager<Command extends ReplyType, Event, Entity, EntityId> {
                 final Optional<Long> lastSnapshotVersion = snapshotManager.snapshotVersion(entityId);
                 final Long lastEventVersion = eventStore.writeEvents(
                         entityId,
-                        result.getLastEventId().map(aLong -> aLong + 1).orElse(0L),
+                        result.getLastEventId().orElse(0L),
                         result.getResultAndEvents().getEvents());
                 final Optional<Entity> resultingEntity = getEntity();
                 final Long pendingBatchSize = lastEventVersion - lastSnapshotVersion.orElse(0L);

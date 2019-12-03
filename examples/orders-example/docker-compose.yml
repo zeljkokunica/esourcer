@@ -1,0 +1,42 @@
+version: '3'
+services:
+  orders-db:
+    image: postgres
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: orders
+    networks:
+      - orders-test-net
+  orders-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VERSION: 0.0.1-SNAPSHOT
+        COMMAND: build
+        PROFILE: dev
+    restart: always
+    container_name: orders-app
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    ports:
+      - 8180:8080
+    working_dir: /usr/app
+    environment:
+      db_url: jdbc:postgresql://orders-db:5432/orders
+    depends_on:
+      - orders-db
+    links:
+      - orders-db
+    networks:
+      - orders-test-net
+networks:
+  orders-test-net:
+    driver: bridge

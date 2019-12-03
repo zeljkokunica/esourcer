@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  datasource:
+    url: ${db_url}
+    username: postgres
+    password: postgres
+    continue-on-error: false
+
+server:
+  port: 8080

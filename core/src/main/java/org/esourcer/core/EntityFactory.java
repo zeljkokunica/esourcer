@@ -1,6 +1,5 @@
 package org.esourcer.core;
 
-import lombok.Getter;
 import org.esourcer.core.entity.EntityManager;
 import org.esourcer.core.entity.EntityMangerOptions;
 import org.esourcer.core.entity.EntityTransactionManager;
