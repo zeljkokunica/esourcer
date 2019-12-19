@@ -11,11 +11,15 @@
 
     <modules>
         <module>core</module>
+        <module>jpa</module>
+        <module>examples/orders-example</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
+        <postgres.version>42.2.5</postgres.version>
+        <jaxb.version>2.3.1</jaxb.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -34,13 +38,13 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
-                <version>2.1.6.RELEASE</version>
+                <version>2.2.1.RELEASE</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>2.1.6.RELEASE</version>
+                <version>2.2.1.RELEASE</version>
             </dependency>
 
             <dependency>
@@ -60,7 +64,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
                 <scope>test</scope>
-                <version>2.1.6.RELEASE</version>
+                <version>2.2.1.RELEASE</version>
             </dependency>
 
             <dependency>
@@ -73,26 +77,26 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>2.1.6.RELEASE</version>
+                <version>2.2.1.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>2.2.1.RELEASE</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-mustache</artifactId>
-                <version>2.1.6.RELEASE</version>
+                <version>2.2.1.RELEASE</version>
             </dependency>
 
+            <!-- Database -->
             <dependency>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>5.2.4</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <scope>runtime</scope>
-                <version>1.4.199</version>
             </dependency>
 
             <dependency>
@@ -109,22 +113,23 @@
             </dependency>
 
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>2.9.9</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>2.9.10.1</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>2.9.9</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <!-- Javax -->
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>2.2</version>
+			</dependency>
+
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb.version}</version>
             </dependency>
 
             <!-- testing -->
@@ -150,7 +155,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.6.RELEASE</version>
+                <version>2.2.1.RELEASE</version>
             </plugin>
 
             <plugin>

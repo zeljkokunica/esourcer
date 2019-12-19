@@ -1,9 +1,9 @@
-package org.esourcer.core.foo;
+package org.esourcer.core;
 
-import org.esourcer.core.EntityFactory;
-import org.esourcer.core.foo.FooCommand.CreateFoo;
-import org.esourcer.core.foo.FooCommand.GetFoo;
-import org.esourcer.core.foo.FooCommand.UpdateFoo;
+import org.esourcer.core.FooCommand.CreateFoo;
+import org.esourcer.core.FooCommand.GetFoo;
+import org.esourcer.core.FooCommand.UpdateFoo;
+import org.esourcer.core.entity.EntityMangerOptions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -16,7 +16,8 @@ public class FooEntityManagerTest {
     @Test
     public void testExecuteCommand() {
         final String fooId = UUID.randomUUID().toString();
-        final var fooEntityFactory = new EntityFactory<>(new FooEntity());
+        final var fooEntityFactory = new EntityFactory<>(new FooEntity())
+                .withEntityMangerOptions(EntityMangerOptions.builder().snapshotBatch(1L).build());
         final var fooEntityManager = fooEntityFactory.forEntity(fooId);
         final Instant creationTimestamp = Instant.now();
         final String newFooId = fooEntityManager.executeCommand(new CreateFoo(fooId, "test", creationTimestamp))

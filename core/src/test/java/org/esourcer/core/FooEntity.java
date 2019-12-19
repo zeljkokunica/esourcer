@@ -1,15 +1,15 @@
-package org.esourcer.core.foo;
+package org.esourcer.core;
 
 import org.esourcer.core.entity.Behaviour;
 import org.esourcer.core.entity.EntityManager;
 import org.esourcer.core.entity.PersistentEntity;
 import org.esourcer.core.entity.ResultAndEvents;
-import org.esourcer.core.foo.FooCommand.CreateFoo;
-import org.esourcer.core.foo.FooCommand.GetFoo;
-import org.esourcer.core.foo.FooCommand.UpdateFoo;
-import org.esourcer.core.foo.FooEvent.FooCreated;
-import org.esourcer.core.foo.FooEvent.FooDetails;
-import org.esourcer.core.foo.FooEvent.FooUpdated;
+import org.esourcer.core.FooCommand.CreateFoo;
+import org.esourcer.core.FooCommand.GetFoo;
+import org.esourcer.core.FooCommand.UpdateFoo;
+import org.esourcer.core.FooEvent.FooCreated;
+import org.esourcer.core.FooEvent.FooDetails;
+import org.esourcer.core.FooEvent.FooUpdated;
 
 import java.util.Optional;
 
@@ -25,13 +25,13 @@ public class FooEntity implements PersistentEntity<FooCommand, FooEvent, Foo, St
             final EntityManager<FooCommand, FooEvent, Foo, String> entityManager,
             final Behaviour<FooCommand, FooEvent, Foo> b) {
         b.setCommandHandler(GetFoo.class,
-                cmd -> ResultAndEvents.ofResult(entityManager.recoverEntity().orElse(null)));
+                cmd -> ResultAndEvents.ofResult(entityManager.getEntity().orElse(null)));
 
         b.setCommandHandler(CreateFoo.class, this::onCreateCommand);
         b.setEventHandler(FooCreated.class, this::onFooCreatedEvent);
 
         b.setCommandHandler(UpdateFoo.class, cmd -> {
-            final Foo existing = entityManager.recoverEntity().orElseThrow();
+            final Foo existing = entityManager.getEntity().orElseThrow();
             return ResultAndEvents
                     .ofEvent(new FooUpdated(new FooDetails(
                             existing.getId(),

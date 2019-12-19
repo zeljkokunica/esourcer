@@ -20,7 +20,7 @@ public class InMemoryEventStore<Event, EntityId> implements EventStore<Event, En
     }
 
     @Override
-    public Long writeEvents(final EntityId entityId, final List<Event> events) {
+    public Long writeEvents(final EntityId entityId, final Long startIndex, final List<Event> events) {
         final String entityTopic = entityEventGroup + "#" + entityId;
         final List<Event> existing = getEvents(entityId);
         final List<Event> updatedList = new ArrayList<>(existing);
