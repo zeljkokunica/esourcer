@@ -1,6 +1,7 @@
 package org.esourcer.core.entity;
 
 import lombok.Getter;
+import org.esourcer.core.events.EventPublisher;
 import org.esourcer.core.events.EventStore;
 import org.esourcer.core.snapshot.SnapshotStore;
 
@@ -14,6 +15,7 @@ public class EntityManager<Command extends ReplyType, Event, Entity, EntityId> {
     private final EntityMangerOptions options;
     private final SnapshotStore<Entity, EntityId> snapshotManager;
     private final EventStore<Event, EntityId> eventStore;
+    private final EventPublisher<Event> eventPublisher;
     private final Behaviour behaviour;
     private final EntityTransactionManager entityTransactionManager;
 
@@ -22,12 +24,14 @@ public class EntityManager<Command extends ReplyType, Event, Entity, EntityId> {
             final EntityMangerOptions options,
             final SnapshotStore<Entity, EntityId> snapshotManager,
             final EventStore<Event, EntityId> eventStore,
+            final EventPublisher<Event> eventPublisher,
             final EntityTransactionManager entityTransactionManager,
             final BiFunction<EntityManager, Behaviour, Behaviour> behaviourBuilder) {
         this.entityId = entityId;
         this.options = options;
         this.snapshotManager = Optional.ofNullable(snapshotManager).orElse(new SnapshotStore.VoidSnapshotManager());
         this.eventStore = eventStore;
+        this.eventPublisher = eventPublisher;
         behaviour = behaviourBuilder.apply(this, new Behaviour<>());
         this.entityTransactionManager = entityTransactionManager;
     }
@@ -46,6 +50,7 @@ public class EntityManager<Command extends ReplyType, Event, Entity, EntityId> {
                 if (pendingBatchSize >= options.getSnapshotBatch()) {
                     snapshotManager.createSnapshot(lastEventVersion, entityId, resultingEntity.get());
                 }
+                eventPublisher.publish(result.getResultAndEvents().getEvents());
             }
             return result.getResultAndEvents().getResult();
         });

@@ -6,7 +6,9 @@ import org.esourcer.core.entity.EntityTransactionManager;
 import org.esourcer.core.entity.EntityTransactionManager.VoidEntityTransactionManager;
 import org.esourcer.core.entity.PersistentEntity;
 import org.esourcer.core.entity.ReplyType;
+import org.esourcer.core.events.EventPublisher;
 import org.esourcer.core.events.EventStore;
+import org.esourcer.core.events.InMemoryEventPublisher;
 import org.esourcer.core.events.InMemoryEventStore;
 import org.esourcer.core.snapshot.InMemorySnapshotStore;
 import org.esourcer.core.snapshot.SnapshotStore;
@@ -18,6 +20,7 @@ public class EntityFactory<Command extends ReplyType, Event, Entity, EntityId> {
     private final PersistentEntity<Command, Event, Entity, EntityId> entity;
     private SnapshotStore<Entity, EntityId> snapshotStore;
     private EventStore<Event, EntityId> eventStore;
+    private EventPublisher<Event> eventPublisher;
     private EntityMangerOptions entityMangerOptions;
     private EntityTransactionManager entityTransactionManager;
 
@@ -34,6 +37,12 @@ public class EntityFactory<Command extends ReplyType, Event, Entity, EntityId> {
     public EntityFactory<Command, Event, Entity, EntityId> withEventStore(
             final EventStore<Event, EntityId> eventStore) {
         this.eventStore = eventStore;
+        return this;
+    }
+
+    public EntityFactory<Command, Event, Entity, EntityId> withEventPublisher(
+            final EventPublisher<Event> eventPublisher) {
+        this.eventPublisher = eventPublisher;
         return this;
     }
 
@@ -56,6 +65,7 @@ public class EntityFactory<Command extends ReplyType, Event, Entity, EntityId> {
                         .orElse(EntityMangerOptions.builder().snapshotBatch(1L).build()),
                 Optional.ofNullable(snapshotStore).orElse(new InMemorySnapshotStore<>(entity.name())),
                 Optional.ofNullable(eventStore).orElse(new InMemoryEventStore<>(entity.name())),
+                Optional.ofNullable(eventPublisher).orElse(new InMemoryEventPublisher<>()),
                 Optional.ofNullable(entityTransactionManager).orElse(new VoidEntityTransactionManager()),
                 entity::buildBehaviour);
     }
